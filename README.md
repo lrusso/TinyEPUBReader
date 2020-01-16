@@ -2,6 +2,8 @@
 
 Tiny EPUB Reader in JavaScript with mobile compatibility.
 
+![alt screenshot](https://raw.githubusercontent.com/lrusso/TinyEPUBReader/master/TinyEPUBReader.png)
+
 ## Web:
 
 https://lrusso.github.io/TinyEPUBReader/TinyEPUBReader.htm
