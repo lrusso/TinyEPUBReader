@@ -1,2 +1,3 @@
-# TinyEPUBReader
-Tiny EPUB Reader in JavaScript with mobile compatibility
+# Tiny EPUB Reader
+
+Tiny EPUB Reader in JavaScript with mobile compatibility.
