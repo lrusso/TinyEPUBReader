@@ -76,14 +76,11 @@
 			<div id="nextMobile" onclick="goNextPage()"></div>
 		</div>
 		<div class="overlay"></div>
-
-
-
 		<div class="gui_container">
 			<div class="gui_background"></div>
 			<div class="gui_email"><a href="mailto:info@lrusso.com">info@lrusso.com</a></div>
-			<div class="gui_upload" onclick="document.getElementById('gui_controls_file').click()"></div>
-			<input type="file" id="gui_controls_file" class="gui_controls_file" onchange="runEmulator(event.target.files);"/>
+			<div class="gui_upload"></div>
+			<input type="file" id="gui_controls_file" class="gui_controls_file" onchange="readEBookFile(event.target.files);"/>
 		</div>
 		<script>
 			// jQuery v2.2.4
@@ -100,41 +97,29 @@
 
 			var MyEPUB;
 
-			function goPrevPage()
+			function readEBookFile(files)
 				{
-				MyEPUB.rendition.prev();
-				}
-
-			function goNextPage()
-				{
-				MyEPUB.rendition.next();
-				}
-
-			function runEmulator(files)
-				{
-				var filereader = new FileReader();
-				filereader.file_name = files[0].name;
-				filereader.onload = function()
+				var extension = files[0].name.split(".").pop().toLowerCase();
+				if (extension=="epub")
 					{
-					document.getElementsByClassName("gui_container")[0].style.display = "none";
-					MyEPUB = ePubReader(this.result,{restore:false});
-					window.reader = MyEPUB;
-					};
+					var filereader = new FileReader();
+					filereader.file_name = files[0].name;
+					filereader.onload = function()
+						{
+						document.getElementsByClassName("gui_container")[0].style.display = "none";
+						MyEPUB = ePubReader(this.result,{restore:false});
+						window.reader = MyEPUB;
+						};
 
-				// READING THE FILE
-				filereader.readAsArrayBuffer(files[0]);
-				}
-
-			function downloadBinary(data)
-				{
-				var blob = new Blob([data],{type: "application/octet-stream"});
-				return window.URL.createObjectURL(blob);
+					filereader.readAsArrayBuffer(files[0]);
+					}
 				}
 
 			window.onload = function()
 				{
-				//MyEPUB = ePubReader("http://192.168.0.128/algo.epub",{restore:false});
-				//window.reader = MyEPUB;
+				document.getElementById("prevMobile").addEventListener("click",function(event){try{MyEPUB.rendition.prev()}catch(err){}});
+				document.getElementById("nextMobile").addEventListener("click",function(event){try{MyEPUB.rendition.next()}catch(err){}});
+				document.getElementsByClassName("gui_upload")[0].addEventListener("click",function(event){document.getElementById("gui_controls_file").click()});
 				}
 		</script>
 	</body>
