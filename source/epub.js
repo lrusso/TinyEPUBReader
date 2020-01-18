@@ -16779,4 +16779,3 @@ module.exports = function(module) {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=epub.js.map

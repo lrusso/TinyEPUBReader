@@ -4368,5 +4368,3 @@ EPUBJS.reader.TocController = function(toc) {
 		"hide" : onHide
 	};
 };
-
-//# sourceMappingURL=reader.js.map
