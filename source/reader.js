@@ -4147,6 +4147,8 @@ EPUBJS.reader.ReaderController = function(book) {
 
 	$next.on("click", function(e){
 
+		try{reader.SidebarController.hide()}catch(err){}
+
 		if(book.package.metadata.direction === "rtl") {
 			rendition.prev();
 		} else {
@@ -4157,6 +4159,8 @@ EPUBJS.reader.ReaderController = function(book) {
 	});
 
 	$prev.on("click", function(e){
+
+		try{reader.SidebarController.hide()}catch(err){}
 
 		if(book.package.metadata.direction === "rtl") {
 			rendition.next();
