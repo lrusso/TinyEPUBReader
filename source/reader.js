@@ -6,6 +6,28 @@
  * @version   3.6.2
  */
 
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -3233,11 +3255,12 @@ EPUBJS.Reader = function(bookPath, _options) {
 
 	this.settings = EPUBJS.core.defaults(_options || {}, {
 		bookPath : bookPath,
-		restore : false,
+		restore : true,
 		reload : false,
 		bookmarks : undefined,
 		annotations : undefined,
 		contained : undefined,
+		bookName : undefined,
 		bookKey : undefined,
 		styles : undefined,
 		sidebarReflow: false,
@@ -3437,15 +3460,11 @@ EPUBJS.Reader.prototype.setBookKey = function(identifier){
 	return this.settings.bookKey;
 };
 
-//-- Checks if the book setting can be retrieved from localStorage
+//-- Checks if the book setting can be retrieved from a Cookie
 EPUBJS.Reader.prototype.isSaved = function(bookPath) {
 	var storedSettings;
 
-	if(!localStorage) {
-		return false;
-	}
-
-	storedSettings = localStorage.getItem(this.settings.bookKey);
+	storedSettings = getCookie(this.settings.bookName);
 
 	if(storedSettings === null) {
 		return false;
@@ -3454,27 +3473,8 @@ EPUBJS.Reader.prototype.isSaved = function(bookPath) {
 	}
 };
 
-EPUBJS.Reader.prototype.removeSavedSettings = function() {
-	if(!localStorage) {
-		return false;
-	}
-
-	localStorage.removeItem(this.settings.bookKey);
-};
-
 EPUBJS.Reader.prototype.applySavedSettings = function() {
-		var stored;
-
-		if(!localStorage) {
-			return false;
-		}
-
-	try {
-		stored = JSON.parse(localStorage.getItem(this.settings.bookKey));
-	} catch (e) { // parsing error of localStorage
-		return false;
-	}
-
+		var stored = JSON.parse(getCookie(this.settings.bookName));
 		if(stored) {
 			// Merge styles
 			if(stored.styles) {
@@ -3492,16 +3492,11 @@ EPUBJS.Reader.prototype.saveSettings = function(){
 	if(this.book) {
 		this.settings.previousLocationCfi = this.rendition.currentLocation().start.cfi;
 	}
-
-	if(!localStorage) {
-		return false;
-	}
-
-	localStorage.setItem(this.settings.bookKey, JSON.stringify(this.settings));
+	setCookie(this.settings.bookName, JSON.stringify(this.settings), 999);
 };
 
 EPUBJS.Reader.prototype.unload = function(){
-	if(this.settings.restore && localStorage) {
+	if(this.settings.restore) {
 		this.saveSettings();
 	}
 };
@@ -4113,6 +4108,8 @@ EPUBJS.reader.ReaderController = function(book) {
 				rendition.prev();
 			}
 
+			reader.saveSettings();
+
 			$prev.addClass("active");
 
 			keylock = true;
@@ -4130,6 +4127,8 @@ EPUBJS.reader.ReaderController = function(book) {
 			} else {
 				rendition.next();
 			}
+
+			reader.saveSettings();
 
 			$next.addClass("active");
 
@@ -4155,6 +4154,8 @@ EPUBJS.reader.ReaderController = function(book) {
 			rendition.next();
 		}
 
+		reader.saveSettings();
+
 		e.preventDefault();
 	});
 
@@ -4167,6 +4168,8 @@ EPUBJS.reader.ReaderController = function(book) {
 		} else {
 			rendition.prev();
 		}
+
+		reader.saveSettings();
 
 		e.preventDefault();
 	});
@@ -4379,6 +4382,7 @@ EPUBJS.reader.TocController = function(toc) {
 
 			$(this).parent('li').addClass("currentChapter");
 			reader.SidebarController.hide();
+			setTimeout(function(){reader.saveSettings()}, 100);
 
 	});
 
