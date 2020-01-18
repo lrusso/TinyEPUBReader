@@ -3636,7 +3636,31 @@ EPUBJS.reader.ControlsController = function(book) {
 		if(reader.sidebarOpen) {
 			reader.SidebarController.hide();
 		} else {
+
+			try
+				{
+				var $list = $("#tocView");
+				var locationCfi = rendition.currentLocation().start.cfi;
+				var spineItem = book.spine.get(locationCfi);
+				var navItem = book.navigation.get(spineItem.href);
+
+				var id = navItem.id,
+						$item = $list.find("#toc-"+id),
+						$current = $list.find(".currentChapter"),
+						$open = $list.find('.openChapter');
+
+				if($item.length)
+					{
+					$current.removeClass("currentChapter");
+					$item.addClass("currentChapter");
+					$item.parents('li').addClass("openChapter");
+					}
+				}
+				catch(err)
+				{
+				}
 			reader.SidebarController.show();
+
 		}
 	});
 
@@ -4078,6 +4102,9 @@ EPUBJS.reader.ReaderController = function(book) {
 	var keylock = false;
 
 	var arrowKeys = function(e) {
+
+		try{reader.SidebarController.hide()}catch(err){}
+
 		if(e.keyCode == 37) {
 
 			if(book.package.metadata.direction === "rtl") {
