@@ -3289,6 +3289,7 @@ EPUBJS.Reader = function(bookPath, _options) {
 	});
 
 	this.rendition.themes.fontSize("140%");
+	this.rendition.themes.override("color", "#635134");
 
 	if(this.settings.previousLocationCfi) {
 		this.displayed = this.rendition.display(this.settings.previousLocationCfi);
