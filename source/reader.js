@@ -3242,7 +3242,7 @@ EPUBJS.Reader = function(bookPath, _options) {
 		styles : undefined,
 		sidebarReflow: false,
 		generatePagination: false,
-		history: true
+		history: false
 	});
 
 	// Overide options with search parameters
