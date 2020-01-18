@@ -8454,9 +8454,10 @@ var IframeView = function () {
 				this.onLoad(event, loading);
 			}.bind(this);
 
-			if (this.settings.method === "blobUrl") {
+			//if (this.settings.method === "blobUrl") {
 				this.blobUrl = (0, _core.createBlobUrl)(contents, "application/xhtml+xml");
-				this.iframe.src = this.blobUrl;
+				this.iframe.contentDocument.location.replace(this.blobUrl);
+			/*
 			} else if (this.settings.method === "srcdoc") {
 				this.iframe.srcdoc = contents;
 			} else {
@@ -8472,6 +8473,7 @@ var IframeView = function () {
 				this.iframe.contentDocument.write(contents);
 				this.iframe.contentDocument.close();
 			}
+			*/
 
 			return loaded;
 		}
