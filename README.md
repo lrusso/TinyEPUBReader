@@ -10,4 +10,4 @@ https://lrusso.github.io/TinyEPUBReader/TinyEPUBReader.htm
 
 ## Based on the work of:
 
-https://github.com/futurepress/epub.js
+https://github.com/futurepress/epub.js **(19 Dec 2019)**
