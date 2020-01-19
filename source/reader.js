@@ -3286,7 +3286,7 @@ EPUBJS.Reader = function(bookPath, _options) {
 	}
 
 	this.settings.styles = this.settings.styles || {
-		fontSize : "100%"
+		fontSize : "140%"
 	};
 
 	this.book = book = new ePub(this.settings.bookPath, this.settings);
@@ -3371,7 +3371,7 @@ EPUBJS.Reader.prototype.adjustFontSize = function(e) {
 	if(!this.settings.styles) return;
 
 	if(!this.settings.styles.fontSize) {
-		this.settings.styles.fontSize = "100%";
+		this.settings.styles.fontSize = "140%";
 	}
 
 	fontSize = parseInt(this.settings.styles.fontSize.slice(0, -1));
@@ -3390,7 +3390,7 @@ EPUBJS.Reader.prototype.adjustFontSize = function(e) {
 
 	if(MOD && e.keyCode == ZERO){
 		e.preventDefault();
-		this.book.setStyle("fontSize", "100%");
+		this.book.setStyle("fontSize", "140%");
 	}
 };
 
@@ -3490,7 +3490,7 @@ EPUBJS.Reader.prototype.applySavedSettings = function() {
 
 EPUBJS.Reader.prototype.saveSettings = function(){
 	if(this.book) {
-		this.settings.previousLocationCfi = this.rendition.currentLocation().start.cfi;
+		this.settings.previousLocationCfi = this.rendition.currentLocation().start.href;
 	}
 	setCookie(this.settings.bookName, JSON.stringify(this.settings), 999);
 };
@@ -3717,6 +3717,7 @@ EPUBJS.reader.ControlsController = function(book) {
 		}
 
 		reader.currentLocationCfi = cfi;
+		reader.saveSettings();
 
 		// Update the History Location
 		if(reader.settings.history &&
@@ -4108,8 +4109,6 @@ EPUBJS.reader.ReaderController = function(book) {
 				rendition.prev();
 			}
 
-			reader.saveSettings();
-
 			$prev.addClass("active");
 
 			keylock = true;
@@ -4127,8 +4126,6 @@ EPUBJS.reader.ReaderController = function(book) {
 			} else {
 				rendition.next();
 			}
-
-			reader.saveSettings();
 
 			$next.addClass("active");
 
@@ -4154,8 +4151,6 @@ EPUBJS.reader.ReaderController = function(book) {
 			rendition.next();
 		}
 
-		reader.saveSettings();
-
 		e.preventDefault();
 	});
 
@@ -4168,8 +4163,6 @@ EPUBJS.reader.ReaderController = function(book) {
 		} else {
 			rendition.prev();
 		}
-
-		reader.saveSettings();
 
 		e.preventDefault();
 	});
@@ -4382,7 +4375,6 @@ EPUBJS.reader.TocController = function(toc) {
 
 			$(this).parent('li').addClass("currentChapter");
 			reader.SidebarController.hide();
-			setTimeout(function(){reader.saveSettings()}, 100);
 
 	});
 
