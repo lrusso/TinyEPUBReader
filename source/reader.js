@@ -8,22 +8,19 @@
 
 var myEPUB;
 
-function sidebarIsOpen() {
+function changePageMobileHandler(myAction) {
     try {
-        var testingObject = document.getElementById("sidebar");
-        if (testingObject.className=="open") {
-        return true;
-        }
-        else
-        {
-        return false;
+        myEPUB.SidebarController.hide();
+        if (myAction==true) {
+          myEPUB.rendition.next();
+        } else {
+          myEPUB.rendition.prev();
         }
     }
     catch(err)
     {
-    return false;
     }
- }
+}
 
 function setCookie(name,value,days) {
     var expires = "";
