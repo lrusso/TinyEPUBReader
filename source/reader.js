@@ -7,8 +7,6 @@
  */
 
 var myEPUB;
-var myPrev = document.getElementById("prev");
-var myNext = document.getElementById("next");
 
 function sidebarIsOpen() {
     try {
@@ -46,6 +44,27 @@ function getCookie(name) {
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
     }
     return null;
+}
+
+function isMobileDevice() {
+    if(navigator.userAgent.match(/Android/i)    ||
+       navigator.userAgent.match(/webOS/i)      ||
+       navigator.userAgent.match(/iPhone/i)     ||
+       navigator.userAgent.match(/iPad/i)       ||
+       navigator.userAgent.match(/iPod/i)       ||
+       navigator.userAgent.match(/BlackBerry/i) ||
+       navigator.userAgent.match(/Windows Phone/i)) {
+       return true;
+    }
+    else
+    {
+    return false;
+    }
+}
+
+if(isMobileDevice()==true) {
+    document.getElementById("prev").style.display="none";
+    document.getElementById("next").style.display="none";
 }
 
 (function (global, factory) {
