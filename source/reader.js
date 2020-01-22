@@ -6,6 +6,26 @@
  * @version   3.6.2
  */
 
+var myEPUB;
+var myPrev = document.getElementById("prev");
+var myNext = document.getElementById("next");
+
+function sidebarIsOpen() {
+    try {
+        var testingObject = document.getElementById("sidebar");
+        if (testingObject.className=="open") {
+        return true;
+        }
+        else
+        {
+        return false;
+        }
+    }
+    catch(err)
+    {
+    return false;
+    }
+ }
 
 function setCookie(name,value,days) {
     var expires = "";
