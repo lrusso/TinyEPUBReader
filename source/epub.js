@@ -4256,11 +4256,6 @@ var Contents = function () {
 					$viewport = this.document.createElement("meta");
 					$viewport.setAttribute("name", "viewport");
 					this.document.querySelector("head").appendChild($viewport);
-
-					// SCRIPT FOR SWIPE EVENTS
-					var myScript = this.document.createElement("script");
-					myScript.text = "var xDown=null;var yDown=null;document.addEventListener('touchstart',handleTouchStart,false);document.addEventListener('touchmove',handleTouchMove,false);document.addEventListener('touchend',handleTouchEnd,false);function getTouches(evt){return evt.touches||evt.originalEvent.touches}function handleTouchStart(evt){var firstTouch=getTouches(evt)[0];xDown=firstTouch.clientX;yDown=firstTouch.clientY}function handleTouchMove(evt){if(!xDown||!yDown){return}var xUp=evt.touches[0].clientX;var yUp=evt.touches[0].clientY;var xDiff=xDown-xUp;var yDiff=yDown-yUp;if(Math.abs(xDiff)>Math.abs(yDiff)){if(xDiff>0){parent.changePageMobileHandler(true)}else{parent.changePageMobileHandler(false)}}xDown=null;yDown=null}function handleTouchEnd(evt){xDown=null;yDown = null}";
-					this.document.querySelector("body").appendChild(myScript);
 				}
 
 				$viewport.setAttribute("content", newContent.join(", "));
@@ -8459,10 +8454,9 @@ var IframeView = function () {
 				this.onLoad(event, loading);
 			}.bind(this);
 
-			//if (this.settings.method === "blobUrl") {
+			if (this.settings.method === "blobUrl") {
 				this.blobUrl = (0, _core.createBlobUrl)(contents, "application/xhtml+xml");
-				this.iframe.contentDocument.location.replace(this.blobUrl);
-			/*
+				this.iframe.src = this.blobUrl;
 			} else if (this.settings.method === "srcdoc") {
 				this.iframe.srcdoc = contents;
 			} else {
@@ -8478,7 +8472,6 @@ var IframeView = function () {
 				this.iframe.contentDocument.write(contents);
 				this.iframe.contentDocument.close();
 			}
-			*/
 
 			return loaded;
 		}
@@ -13604,10 +13597,8 @@ var Layout = function () {
 			var delta;
 
 			if (this._spread && width >= this._minSpreadWidth) {
-				document.getElementById("divider").style.display = "block";
 				divisor = 2;
 			} else {
-				document.getElementById("divider").style.display = "none";
 				divisor = 1;
 			}
 
