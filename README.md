@@ -10,7 +10,7 @@ https://lrusso.github.io/TinyEPUBReader/TinyEPUBReader.htm
 
 ## Main differences with epub.js
 
-* Swipe left and right in mobile devices.
+* Swipe feature in mobile devices.
 * Google Play Books theme implementation.
 * Bugfix when redirecting to a CFI using a URL.
 
