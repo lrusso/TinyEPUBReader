@@ -7,13 +7,17 @@
  */
 
 var myEPUB;
+var CFIChecker = null;
+var CFINewHash = null;
 
 function changePageMobileHandler(myAction) {
     try {
         myEPUB.SidebarController.hide();
         if (myAction==true) {
+          CFIChecker=null;CFINewHash=null;
           myEPUB.rendition.next();
         } else {
+          CFIChecker=null;CFINewHash=null;
           myEPUB.rendition.prev();
         }
     }
@@ -3291,7 +3295,7 @@ EPUBJS.Reader = function(bookPath, _options) {
 
 	this.settings = EPUBJS.core.defaults(_options || {}, {
 		bookPath : bookPath,
-		restore : true,
+		restore : false,
 		reload : false,
 		bookmarks : undefined,
 		annotations : undefined,
@@ -3301,7 +3305,7 @@ EPUBJS.Reader = function(bookPath, _options) {
 		styles : undefined,
 		sidebarReflow: false,
 		generatePagination: false,
-		history: false
+		history: true
 	});
 
 	// Overide options with search parameters
@@ -3540,8 +3544,19 @@ EPUBJS.Reader.prototype.unload = function(){
 
 EPUBJS.Reader.prototype.hashChanged = function(){
 	var hash = window.location.hash.slice(1);
+
+	var regex = /\:(.*?)\)/;
+	var strToMatch = hash;
+	var matched = regex.exec(strToMatch);
+	var toFind = ":" + matched[1] + ")";
+	var replaceWith = ":" + (parseInt(matched[1])+1) + ")";
+	var newHash = hash.replace(toFind,replaceWith);
+	CFIChecker = hash;
+	CFINewHash = newHash;
+
 	this.rendition.display(hash);
 };
+
 
 EPUBJS.Reader.prototype.selectedRange = function(cfiRange){
 	var cfiFragment = "#"+cfiRange;
@@ -3760,6 +3775,20 @@ EPUBJS.reader.ControlsController = function(book) {
 				window.location.hash != cfiFragment) {
 			// Add CFI fragment to the history
 			history.pushState({}, '', cfiFragment);
+
+			if (CFIChecker!=null)
+				{
+				if (cfiFragment!="#"+CFIChecker)
+					{
+					book.rendition.display(CFINewHash);
+					}
+					else
+					{
+					CFIChecker = null;
+					CFINewHash = null;
+					}
+				}
+
 		}
 	});
 
@@ -4140,8 +4169,10 @@ EPUBJS.reader.ReaderController = function(book) {
 		if(e.keyCode == 37) {
 
 			if(book.package.metadata.direction === "rtl") {
+				CFIChecker=null;CFINewHash=null;
 				rendition.next();
 			} else {
+				CFIChecker=null;CFINewHash=null;
 				rendition.prev();
 			}
 
@@ -4158,8 +4189,10 @@ EPUBJS.reader.ReaderController = function(book) {
 		if(e.keyCode == 39) {
 
 			if(book.package.metadata.direction === "rtl") {
+				CFIChecker=null;CFINewHash=null;
 				rendition.prev();
 			} else {
+				CFIChecker=null;CFINewHash=null;
 				rendition.next();
 			}
 
@@ -4182,8 +4215,10 @@ EPUBJS.reader.ReaderController = function(book) {
 		try{reader.SidebarController.hide()}catch(err){}
 
 		if(book.package.metadata.direction === "rtl") {
+			CFIChecker=null;CFINewHash=null;
 			rendition.prev();
 		} else {
+			CFIChecker=null;CFINewHash=null;
 			rendition.next();
 		}
 
@@ -4195,8 +4230,10 @@ EPUBJS.reader.ReaderController = function(book) {
 		try{reader.SidebarController.hide()}catch(err){}
 
 		if(book.package.metadata.direction === "rtl") {
+			CFIChecker=null;CFINewHash=null;
 			rendition.next();
 		} else {
+			CFIChecker=null;CFINewHash=null;
 			rendition.prev();
 		}
 
