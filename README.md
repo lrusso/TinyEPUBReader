@@ -8,6 +8,13 @@ Tiny EPUB Reader in JavaScript with mobile compatibility.
 
 https://lrusso.github.io/TinyEPUBReader/TinyEPUBReader.htm
 
+## Main differences with epub.js
+
+* Swipe left and right in mobile devices
+* Fixed redirection to a CFI using a URL.
+* Google Play Books theme implementation.
+
+
 ## Based on the work of:
 
 https://github.com/futurepress/epub.js **(Commit 19 Dec 2019)**
