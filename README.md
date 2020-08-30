@@ -1,6 +1,6 @@
 # Tiny EPUB Reader
 
-Tiny EPUB Reader in JavaScript with mobile compatibility.
+Tiny EPUB Reader developed in JavaScript.
 
 ![alt screenshot](https://raw.githubusercontent.com/lrusso/TinyEPUBReader/master/TinyEPUBReader.png)
 
